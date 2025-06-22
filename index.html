@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Expert AI Voice Test (by Abduraxmon)</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    #container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    #chat {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+      background: #fefefe;
+    }
+    .message {
+      margin: 8px 0;
+    }
+    .user {
+      text-align: right;
+      color: blue;
+    }
+    .bot {
+      text-align: left;
+      color: green;
+    }
+    #userInput {
+      width: 75%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #sendBtn, #voiceStart {
+      padding: 10px 15px;
+      margin-left: 5px;
+      border: none;
+      border-radius: 5px;
+      background: #2563eb;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h2>Expert AI (Test) 🎤</h2>
+    <div id="chat"></div>
+    <input type="text" id="userInput" placeholder="Savolingizni yozing..." />
+    <button id="sendBtn">Yuborish</button>
+    <button id="voiceStart">🎤</button>
+  </div>
+
+  <script>
+    const input = document.getElementById("userInput");
+    const chat = document.getElementById("chat");
+    const sendBtn = document.getElementById("sendBtn");
+    const voiceBtn = document.getElementById("voiceStart");
+
+    function addMessage(text, sender) {
+      const div = document.createElement("div");
+      div.classList.add("message", sender);
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function handleUserInput() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      input.value = "";
+
+      // Javob
+      setTimeout(() => {
+        const answer = getAIResponse(text);
+        addMessage(answer, "bot");
+        speak(answer);
+      }, 300);
+    }
+
+    sendBtn.addEventListener("click", handleUserInput);
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") handleUserInput();
+    });
+
+    // AI mantiq
+    function getAIResponse(text) {
+      const q = text.toLowerCase();
+      if (q.includes("salom")) return "Salom! Qanday yordam bera olaman?";
+      if (q.includes("isming")) return "Mening ismim Expert AI.";
+      if (q.includes("raqam") || q.includes("hisobla")) return "Raqamlar bilan bog‘liq savollarni tushuntiring.";
+      return "Bu savolni hali to‘liq tushunmadim. Yana aniqlashtirasizmi?";
+    }
+
+    // Ovozni o‘qish (sintetik nutq)
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "uz-UZ";
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    // Ovoz tanish (Speech Recognition)
+    let recognition;
+    let recognitionActive = false;
+
+    voiceBtn.addEventListener("click", () => {
+      if (!("webkitSpeechRecognition" in window)) {
+        alert("Brauzeringiz ovoz tanishni qo‘llab-quvvatlamaydi.");
+        return;
+      }
+
+      if (!recognition) {
+        recognition = new webkitSpeechRecognition();
+        recognition.lang = "uz-UZ";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onresult = (event) => {
+          const speech = event.results[0][0].transcript;
+          input.value = speech;
+          handleUserInput();
+        };
+
+        recognition.onerror = () => {
+          alert("Ovoz tanishda xatolik yuz berdi");
+        };
+      }
+
+      if (!recognitionActive) {
+        recognition.start();
+        voiceBtn.innerText = "🎙️...";
+        recognitionActive = true;
+      } else {
+        recognition.stop();
+        voiceBtn.innerText = "🎤";
+        recognitionActive = false;
+      }
+    });
+  </script>
+</body>
+</html>

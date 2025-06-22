@@ -1,0 +1,153 @@
+/* style.css - Expert AI Ultimate (by Abduraxmon) */
+
+:root {
+  --bg-light: #f9fafb;
+  --bg-dark: #111827;
+  --text-light: #1f2937;
+  --text-dark: #f3f4f6;
+  --primary: #2563eb;
+  --accent: #10b981;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --font: 'Segoe UI', sans-serif;
+  --transition: 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font);
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: var(--transition);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--primary);
+  color: white;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+#toggleTheme {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+}
+
+.chat-window {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.message {
+  max-width: 80%;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  line-height: 1.4;
+  animation: fadeIn 0.3s ease;
+}
+
+.message.user {
+  background: var(--accent);
+  color: white;
+  align-self: flex-end;
+}
+
+.message.bot {
+  background: #e5e7eb;
+  color: #111827;
+  align-self: flex-start;
+}
+
+body.dark .message.bot {
+  background: #1f2937;
+  color: white;
+}
+
+footer {
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  background: #f1f5f9;
+}
+
+body.dark footer {
+  background: #1f2937;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  outline: none;
+  background: var(--input-bg);
+}
+
+button {
+  padding: 0.6rem 1rem;
+  border: none;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--primary);
+  color: white;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #1e40af;
+}
+
+#footer-note {
+  text-align: center;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+body.dark #footer-note {
+  background: #0f172a;
+  color: #94a3b8;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 1.2rem; }
+  button, input { font-size: 0.95rem; }
+}
